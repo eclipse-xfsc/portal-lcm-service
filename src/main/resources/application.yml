@@ -1,0 +1,42 @@
+server.port: 8091
+
+spring.mvc.pathmatch.matching-strategy: ANT_PATH_MATCHER
+
+# Demo - generic external call
+services.identity.uri.internal: http://gaia-x.demo.local:8081/demo
+
+spring.main.allow-circular-references: true
+
+# KEYCLOAK-------------------------------------------
+keycloak.auth-server-url: ${KC_URL}
+keycloak.realm: ${KC_REALM}
+keycloak.resource: ${KC_RESOURCE}
+keycloak.public-client: true
+keycloak.bearer-only: true
+
+keycloak.principal-attribute: preferred_username
+
+check-keycloak-token: true
+#----------------------------------------------------
+
+springfox:
+  documentation:
+    swaggerUi:
+      baseUrl: /api/lcm-service
+    openApi:
+      v3:
+        path: /api/lcm-service/v3/api-docs
+    swagger:
+      v2:
+        path: /api/lcm-service/v2/api-docs
+
+---
+spring.config.activate.on-profile: mesh
+server.port: 80
+server.shutdown: graceful
+spring.lifecycle.timeout-per-shutdown-phase: 10s
+management.endpoint.health.probes.enabled: true
+management.endpoints.web.exposure.include: "*"
+management.server.port: 4004
+
+services.identity.uri.internal: http://demo/demo
